@@ -27,7 +27,7 @@ void BsplineCurveEvaluator::evaluateCurve(const std::vector<Point>& ptvCtrlPts,
 		{
 			GLfloat ctrlpoint[8] = { ptvCtrlPts[i].x, ptvCtrlPts[i+1].x, ptvCtrlPts[i+2].x, ptvCtrlPts[i+3].x, ptvCtrlPts[i].y, ptvCtrlPts[i+1].y,
 				ptvCtrlPts[i+2].y, ptvCtrlPts[i+3].y };
-			for (float j = 0.0; j < 1.0; j = j + 0.1)
+			for (float j = 0.0; j < 1.01; j = j + 0.1)
 			{
 				GLfloat t[4] = { j*j*j, j*j, j, 1 };
 				GLfloat mat1[4] = { bbm[0] * t[0] + bbm[1] * t[1] + bbm[2] * t[2] + bbm[3] * t[3], bbm[4] * t[0] + bbm[5] * t[1] + bbm[6] * t[2] + bbm[7] * t[3],

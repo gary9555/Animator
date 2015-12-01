@@ -35,16 +35,16 @@
 // of the controls from the user interface.
 enum RobotArmControls
 { 
-	TEST,
+	//TEST,
 	XPOS,
 	YPOS,
 	ZPOS,
-	HEIGHT,
-	ROTATE,
-	LIGHT_X,
-	LIGHT_Y,
-	LIGHT_Z,
-	LIGHT_INTENSITY,
+	//HEIGHT,
+	//ROTATE,
+	//LIGHT_X,
+	//LIGHT_Y,
+	//LIGHT_Z,
+	//LIGHT_INTENSITY,
 	UPPER_BODY_X,
 	UPPER_BODY_Y,
 	UPPER_BODY_Z,
@@ -80,8 +80,8 @@ enum RobotArmControls
 	HEAD_Z,
 	LEFT_FOOT_X,
 	RIGHT_FOOT_X,
-	ANIMATE,
-	LIGHT_CHANGE,
+	//ANIMATE,
+	//LIGHT_CHANGE,
 	GUN,
 	HAT,
 	CIGAR,
@@ -94,8 +94,9 @@ enum RobotArmControls
 	LEFT_HAND_CONTRAINT_X,
 	LEFT_HAND_CONTRAINT_Y,
 	LEFT_HAND_CONTRAINT_Z,
-	META_ARM,
-	META_ARM_SIZE,
+	PARTICLE_COUNT,
+	//META_ARM,
+	//META_ARM_SIZE,
 	NUMCONTROLS
 
 	/*
@@ -152,8 +153,9 @@ void RobotArm::draw()
 	float h1 = VAL( BASE_LENGTH );
 	float h2 = VAL( LOWER_LENGTH );
 	float h3 = VAL( UPPER_LENGTH );
-	float pc = VAL( PARTICLE_COUNT );
 	*/
+	float pc = VAL( PARTICLE_COUNT );
+	
 
     // This call takes care of a lot of the nasty projection 
     // matrix stuff
@@ -727,17 +729,17 @@ int main()
 {
     ModelerControl controls[NUMCONTROLS ];
 	
-	controls[TEST] = ModelerControl("Test", 0, 1, 0.1f, 1);
+	//controls[TEST] = ModelerControl("Test", 0, 1, 0.1f, 1);
 
 	controls[XPOS] = ModelerControl("X Position", -5, 5, 0.1f, 0);
 	controls[YPOS] = ModelerControl("Y Position", 0, 5, 0.1f, 0);
 	controls[ZPOS] = ModelerControl("Z Position", -5, 5, 0.1f, 0);
-	controls[HEIGHT] = ModelerControl("Height", 1, 2.5, 0.1f, 1);
-	controls[ROTATE] = ModelerControl("Rotate", -135, 135, 1, 0);
-	controls[LIGHT_INTENSITY] = ModelerControl("Light Intensity", 0, 5, 0.1f, 1);
-	controls[LIGHT_X] = ModelerControl("Light X", -30, 30, 1, 4);
-	controls[LIGHT_Y] = ModelerControl("Light Y", -30, 30, 1, 2);
-	controls[LIGHT_Z] = ModelerControl("Light Z", -30, 30, 1, 4);
+	//controls[HEIGHT] = ModelerControl("Height", 1, 2.5, 0.1f, 1);
+	//controls[ROTATE] = ModelerControl("Rotate", -135, 135, 1, 0);
+	//controls[LIGHT_INTENSITY] = ModelerControl("Light Intensity", 0, 5, 0.1f, 1);
+	//controls[LIGHT_X] = ModelerControl("Light X", -30, 30, 1, 4);
+	//controls[LIGHT_Y] = ModelerControl("Light Y", -30, 30, 1, 2);
+	//controls[LIGHT_Z] = ModelerControl("Light Z", -30, 30, 1, 4);
 	controls[UPPER_BODY_X] = ModelerControl("Upper Body X", -90, 90, 1, 0);
 	controls[UPPER_BODY_Y] = ModelerControl("Upper Body Y", -90, 90, 1, 0);
 	controls[UPPER_BODY_Z] = ModelerControl("Upper Body Z", -45, 45, 1, 0);
@@ -789,11 +791,11 @@ int main()
 	controls[LEFT_HAND_CONTRAINT_X] = ModelerControl("Left Hand Constraint X", 0, 1, 1, 0);
 	controls[LEFT_HAND_CONTRAINT_Y] = ModelerControl("Left Hand Constraint Y", 0, 1, 1, 0);
 	controls[LEFT_HAND_CONTRAINT_Z] = ModelerControl("Left Hand Constraint Z", 0, 1, 1, 0);
-	controls[META_ARM] = ModelerControl("Meta Arm?", 0, 1, 1, 0);
-	controls[META_ARM_SIZE] = ModelerControl("Meta Arm Size", 6, 25, 0.1f, 8.5);
+	//controls[META_ARM] = ModelerControl("Meta Arm?", 0, 1, 1, 0);
+	//controls[META_ARM_SIZE] = ModelerControl("Meta Arm Size", 6, 25, 0.1f, 8.5);
 
-	controls[ANIMATE] = ModelerControl("Animate", 0, 1, 1, 0);
-	controls[LIGHT_CHANGE] = ModelerControl("Light Change", 0, 1, 1, 0);
+	//controls[ANIMATE] = ModelerControl("Animate", 0, 1, 1, 0);
+	//controls[LIGHT_CHANGE] = ModelerControl("Light Change", 0, 1, 1, 0);
 
 	/*
 	controls[BASE_ROTATION] = ModelerControl("base rotation (theta)", -180.0, 180.0, 0.1, 0.0 );
@@ -803,14 +805,18 @@ int main()
     controls[BASE_LENGTH] = ModelerControl("base height (h1)", 0.5, 10.0, 0.1, 0.8 );
     controls[LOWER_LENGTH] = ModelerControl("lower arm length (h2)", 1, 10.0, 0.1, 3.0 );
     controls[UPPER_LENGTH] = ModelerControl("upper arm length (h3)", 1, 10.0, 0.1, 2.5 );
+	*/
     controls[PARTICLE_COUNT] = ModelerControl("particle count (pc)", 0.0, 5.0, 0.1, 5.0 );
-    */
+    
 
 
 	// You should create a ParticleSystem object ps here and then
 	// call ModelerApplication::Instance()->SetParticleSystem(ps)
 	// to hook it up to the animator interface.
+	ParticleSystem *ps = new ParticleSystem();
+	// do some more particle system setup
 
+	ModelerApplication::Instance()->SetParticleSystem(ps);
     ModelerApplication::Instance()->Init(&createRobotArm, controls, NUMCONTROLS);
 
     return ModelerApplication::Instance()->Run();

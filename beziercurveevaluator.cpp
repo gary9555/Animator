@@ -25,15 +25,25 @@ void BezierCurveEvaluator::evaluateCurve(const std::vector<Point>& ptvCtrlPts,
 	{
 			GLfloat ctrlpoint[8] = { ptvCtrlPts[0].x, ptvCtrlPts[1].x, ptvCtrlPts[2].x, ptvCtrlPts[3].x, ptvCtrlPts[0].y, ptvCtrlPts[1].y,
 				ptvCtrlPts[2].y, ptvCtrlPts[3].y};
-			for (float j = 0.0; j < 1.0; j = j + 0.1)
+			int i;
+			for (i = 0; i < iCtrlPtCount - 3; i+=3)
 			{
-				GLfloat t[4] = { j*j*j, j*j, j, 1};
-				GLfloat mat1[4] = { bbm[0] * t[0] + bbm[1] * t[1] + bbm[2] * t[2] + bbm[3] * t[3], bbm[4] * t[0] + bbm[5] * t[1] + bbm[6] * t[2] + bbm[7] * t[3],
-					bbm[8] * t[0] + bbm[9] * t[1] + bbm[10] * t[2] + bbm[11] * t[3], bbm[12] * t[0] + bbm[13] * t[1] + bbm[14] * t[2] + bbm[15] * t[3] };
-				GLfloat evapoint[2] = { mat1[0] * ctrlpoint[0] + mat1[1] * ctrlpoint[1] + mat1[2] * ctrlpoint[2] + mat1[3] * ctrlpoint[3],
-					mat1[0] * ctrlpoint[4] + mat1[1] * ctrlpoint[5] + mat1[2] * ctrlpoint[6] + mat1[3] * ctrlpoint[7] };
-				Point p = Point(evapoint[0], evapoint[1]);
-				ptvEvaluatedCurvePts.push_back(p);
+				GLfloat ctrlpoint[8] = { ptvCtrlPts[i].x, ptvCtrlPts[i + 1].x, ptvCtrlPts[i + 2].x, ptvCtrlPts[i + 3].x, ptvCtrlPts[i].y, ptvCtrlPts[i + 1].y,
+					ptvCtrlPts[i + 2].y, ptvCtrlPts[i + 3].y };
+				for (float j = 0.0; j < 1.01; j = j + 0.1)
+				{
+					GLfloat t[4] = { j*j*j, j*j, j, 1 };
+					GLfloat mat1[4] = { bbm[0] * t[0] + bbm[1] * t[1] + bbm[2] * t[2] + bbm[3] * t[3], bbm[4] * t[0] + bbm[5] * t[1] + bbm[6] * t[2] + bbm[7] * t[3],
+						bbm[8] * t[0] + bbm[9] * t[1] + bbm[10] * t[2] + bbm[11] * t[3], bbm[12] * t[0] + bbm[13] * t[1] + bbm[14] * t[2] + bbm[15] * t[3] };
+					GLfloat evapoint[2] = { mat1[0] * ctrlpoint[0] + mat1[1] * ctrlpoint[1] + mat1[2] * ctrlpoint[2] + mat1[3] * ctrlpoint[3],
+						mat1[0] * ctrlpoint[4] + mat1[1] * ctrlpoint[5] + mat1[2] * ctrlpoint[6] + mat1[3] * ctrlpoint[7] };
+					Point p = Point(evapoint[0], evapoint[1]);
+					ptvEvaluatedCurvePts.push_back(p);
+				}
+			}
+			for (int j = i; j < iCtrlPtCount; j++)
+			{
+				ptvEvaluatedCurvePts.push_back(ptvCtrlPts[j]);
 			}
 	}
 
