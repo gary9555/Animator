@@ -139,8 +139,11 @@ void Camera::calculateViewingTransformParameters()
 Camera::Camera() 
 {
 	mAzimuth = mTwist = 0.0f;
-	mElevation = 0.7f;
-	mDolly = -20.0f;
+	//mElevation = 0.7f;
+	//mDolly = -20.0f;
+	mDolly = -50.0f;//-20.0f;
+	mElevation = 0.2f;
+	mAzimuth = (float)M_PI;
 
 	mLookAt = Vec3f( 0, 0, 0 );
 
