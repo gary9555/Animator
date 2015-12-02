@@ -9,7 +9,7 @@
 #include "modelerdraw.h"
 #include "particleSystem.h"
 
-
+#include "mat.h"
 #include <FL/gl.h>
 #include <stdlib.h>
 
@@ -162,238 +162,247 @@ void RobotArm::draw()
     ModelerView::draw();
 
 	static GLfloat lmodel_ambient[] = {0.4,0.4,0.4,1.0};
-
+	Mat4f originMatrix = getModelViewMatrix();
 	// define the model
 	setAmbientColor(0.1, 0.1, 0.1);
 	setDiffuseColor(COLOR_BLUE);
 	glPushMatrix();
-	glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+		glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
 
-	// center of the body
-	glPushMatrix();
-	glScaled(2, 1, 1);
-	drawSphere(1);
-	glScaled(0.5, 1, 1);
-
-	// Upper Body		
-	glPushMatrix();
-	glRotated(VAL(UPPER_BODY_X), 1.0, 0.0, 0.0);
-	glRotated(VAL(UPPER_BODY_Y), 0.0, 1.0, 0.0);
-	glRotated(VAL(UPPER_BODY_Z), 0.0, 0.0, 1.0);
-	glRotated(-90, 1.0, 0.0, 0.0);
-	glScaled(2, 1.4, 1);
-	drawCylinder(4, 1, 1.2);        //    , "./images/shirt.bmp");
-	glScaled(0.5, 1 / 1.4, 1);
-	// Left upper arm pivot
-	setDiffuseColor(COLOR_SKIN);
-	glPushMatrix();
-	glTranslated(2.2, 0, 3.2);
-	drawSphere(0.8);
-	// Left upper arm
-	glRotated(90, 1.0, 0.0, 0.0);
-	glRotated(VAL(LEFT_UPPER_ARM_X) - VAL(LEFT_LINK_MOTION) * 70 / 90, 1.0, 0.0, 0.0);
-	glRotated(VAL(LEFT_UPPER_ARM_Y) - VAL(LEFT_LINK_MOTION) * 35 / 90, 0.0, 1.0, 0.0);
-	glRotated(VAL(LEFT_UPPER_ARM_Z) + VAL(LEFT_LINK_MOTION) * 25 / 90, 0.0, 0.0, 1.0);
-	glRotated(90, 1.0, 0.0, 0.0);
-	/*
-	if (VAL(META_ARM)){
-		glScaled(0.2, 0.2, 0.5);
-		glRotated(-90, 0.0, 1.0, 0.0);
-		drawMetaarm(VAL(META_ARM_SIZE));
-		glRotated(90, 0.0, 1.0, 0.0);
-		glScaled(5, 5, 2);
-	}*/
-	//else{
-		drawCylinder(4.5, 0.8, 0.6);
-	//}
-	// Left lower arm pivot
-	glTranslated(0, 0, 4.5);
-	drawSphere(0.6);
-	// Left lower arm
-	glRotated(-90, 1.0, 0.0, 0.0);
-	glRotated(VAL(LEFT_LOWER_ARM_X) - VAL(LEFT_LINK_MOTION) * 130 / 90, 1.0, 0.0, 0.0);
-	glRotated(90, 1.0, 0.0, 0.0);
-	drawCylinder(3.5, 0.6, 0.4);
-	// Left hand pivot
-	glTranslated(0, 0, 3.5);
-	drawSphere(0.4);
-	// Left hand
-	glRotated(VAL(LEFT_HAND_X), 1.0, 0.0, 0.0);
-	glRotated(VAL(LEFT_HAND_Z), 0.0, 1.0, 0.0);
-	glTranslated(-0.2, -0.5, 0);
-	drawBox(0.4, 1, 1.2);
-	// Gun	
-	if (VAL(GUN)){
-		setDiffuseColor(0.55, 0.52, 0.41);
+		// center of the body
 		glPushMatrix();
-		glTranslated(-0.4, 0, 0.2);
-		//drawGun();
+			glScaled(2, 1, 1);
+			drawSphere(1);
+			glScaled(0.5, 1, 1);
+
+			// Upper Body		
+			glPushMatrix();
+				glRotated(VAL(UPPER_BODY_X), 1.0, 0.0, 0.0);
+				glRotated(VAL(UPPER_BODY_Y), 0.0, 1.0, 0.0);
+				glRotated(VAL(UPPER_BODY_Z), 0.0, 0.0, 1.0);
+				glRotated(-90, 1.0, 0.0, 0.0);
+				glScaled(2, 1.4, 1);
+				drawCylinder(4, 1, 1.2);        //    , "./images/shirt.bmp");
+				glScaled(0.5, 1 / 1.4, 1);
+				// Left upper arm pivot
+				setDiffuseColor(COLOR_SKIN);
+				glPushMatrix();
+				glTranslated(2.2, 0, 3.2);
+				drawSphere(0.8);
+				// Left upper arm
+				glRotated(90, 1.0, 0.0, 0.0);
+				glRotated(VAL(LEFT_UPPER_ARM_X) - VAL(LEFT_LINK_MOTION) * 70 / 90, 1.0, 0.0, 0.0);
+				glRotated(VAL(LEFT_UPPER_ARM_Y) - VAL(LEFT_LINK_MOTION) * 35 / 90, 0.0, 1.0, 0.0);
+				glRotated(VAL(LEFT_UPPER_ARM_Z) + VAL(LEFT_LINK_MOTION) * 25 / 90, 0.0, 0.0, 1.0);
+				glRotated(90, 1.0, 0.0, 0.0);
+				/*
+				if (VAL(META_ARM)){
+					glScaled(0.2, 0.2, 0.5);
+					glRotated(-90, 0.0, 1.0, 0.0);
+					drawMetaarm(VAL(META_ARM_SIZE));
+					glRotated(90, 0.0, 1.0, 0.0);
+					glScaled(5, 5, 2);
+				}*/
+				//else{
+					drawCylinder(4.5, 0.8, 0.6);
+				//}
+				// Left lower arm pivot
+				glTranslated(0, 0, 4.5);
+				drawSphere(0.6);
+				// Left lower arm
+				glRotated(-90, 1.0, 0.0, 0.0);
+				glRotated(VAL(LEFT_LOWER_ARM_X) - VAL(LEFT_LINK_MOTION) * 130 / 90, 1.0, 0.0, 0.0);
+				glRotated(90, 1.0, 0.0, 0.0);
+				drawCylinder(3.5, 0.6, 0.4);
+				// Left hand pivot
+				glTranslated(0, 0, 3.5);
+				drawSphere(0.4);
+				// Left hand
+				glRotated(VAL(LEFT_HAND_X), 1.0, 0.0, 0.0);
+				glRotated(VAL(LEFT_HAND_Z), 0.0, 1.0, 0.0);
+				glTranslated(-0.2, -0.5, 0);
+				drawBox(0.4, 1, 1.2);
+				// Gun	
+				if (VAL(GUN)){
+					setDiffuseColor(0.55, 0.52, 0.41);
+					glPushMatrix();
+					glTranslated(-0.4, 0, 0.2);
+					//drawGun();
+					glPopMatrix();
+					setDiffuseColor(COLOR_SKIN);
+				}
+				// Left thumb
+				glPushMatrix();
+				glTranslated(0, 1, 0);
+				glTranslated(0.2, 0, 0);
+				glRotated(VAL(LEFT_THUMB), 1.0, 0.0, 0.0);
+				glTranslated(-0.2, 0, 0);
+				drawBox(0.4, 0.4, 0.6);
+	
+				
+				Mat4f curMatrix = getModelViewMatrix();
+				Mat4f TransToWorld = originMatrix.inverse() * curMatrix;
+				Vec4f globalCoord = TransToWorld * Vec4f(0, 0, 0, 1);
+
+				ParticleSystem *ps = ModelerApplication::Instance()->GetParticleSystem();
+				ps->SpawnParticles(Vec3f(globalCoord[0], globalCoord[1], globalCoord[2]), pc);
+
+				glPopMatrix();
+				glPopMatrix();
+
+				// Right upper arm pivot
+				glPushMatrix();
+				glTranslated(-2.2, 0, 3.2);
+				drawSphere(0.8);
+				// Right upper arm
+				glRotated(90, 1.0, 0.0, 0.0);
+				glRotated(VAL(RIGHT_UPPER_ARM_X) - VAL(RIGHT_LINK_MOTION) * 70 / 90 , 1.0, 0.0, 0.0);
+				glRotated(VAL(RIGHT_UPPER_ARM_Y) + VAL(RIGHT_LINK_MOTION) * 35 / 90, 0.0, 1.0, 0.0);
+				glRotated(VAL(RIGHT_UPPER_ARM_Z) - VAL(RIGHT_LINK_MOTION) * 25 / 90, 0.0, 0.0, 1.0);
+				glRotated(90, 1.0, 0.0, 0.0);
+				/*
+				if (VAL(META_ARM)){
+					glScaled(0.2, 0.2, 0.5);
+					glRotated(-90, 0.0, 1.0, 0.0);
+					drawMetaarm(VAL(META_ARM_SIZE));
+					glRotated(90, 0.0, 1.0, 0.0);
+					glScaled(5, 5, 2);
+				}*/
+				//else{
+					drawCylinder(4.5, 0.8, 0.6);
+				//}
+				// Right lower arm pivot
+				glTranslated(0, 0, 4.5);
+				drawSphere(0.6);
+				// Right lower arm
+				glRotated(-90, 1.0, 0.0, 0.0);
+				glRotated(VAL(RIGHT_LOWER_ARM_X) - VAL(RIGHT_LINK_MOTION) * 130 / 90, 1.0, 0.0, 0.0);
+				glRotated(90, 1.0, 0.0, 0.0);
+				drawCylinder(3.5, 0.6, 0.4);
+				// Right hand pivot
+				glTranslated(0, 0, 3.5);
+				drawSphere(0.4);
+				// Right hand
+				glRotated(VAL(RIGHT_HAND_X), 1.0, 0.0, 0.0);
+				glRotated(VAL(RIGHT_HAND_Z), 0.0, 1.0, 0.0);
+				glTranslated(-0.2, -0.5, 0);
+				drawBox(0.4, 1, 1.2);
+				// Right thumb
+				glTranslated(0, 1, 0);
+				glTranslated(0.2, 0, 0);
+				glRotated(VAL(RIGHT_THUMB), 1.0, 0.0, 0.0);
+				glTranslated(-0.2, 0, 0);
+				drawBox(0.4, 0.4, 0.6);
+				glPopMatrix();
+
+				// Neck pivot
+				glPushMatrix();
+				glTranslated(0, 0, 4);
+				drawSphere(0.7);
+				// Neck
+				glRotated(90, 1, 0, 0);
+				glRotated(VAL(HEAD_X), 1, 0, 0);
+				glRotated(VAL(HEAD_Y), 0, 1, 0);
+				glRotated(VAL(HEAD_Z), 0, 0, 1);
+				glRotated(-90, 1, 0, 0);
+				drawCylinder(1, 0.7, 0.7);
+				// head
+				glTranslated(0, 0, 1.5);
+				glScaled(1, 1, 1.5);
+				drawHead(VAL(NOSE_SIZE), VAL(EYE_COLOR), VAL(EYE_SIZE), VAL(EYE_BALL_SIZE), VAL(EYE_DIST));
+				glScaled(1, 1, 1.0 / 1.5);
+				// hat
+				if (VAL(HAT)){
+					setDiffuseColor(0.76, 0.65, 0.19);
+					glPushMatrix();
+					glTranslated(0, 0, 1.8);
+					glRotated(90, 1.0, 0.0, 0.0);
+					drawHat(1, 2);
+					glPopMatrix();
+					setDiffuseColor(COLOR_SKIN);
+				}
+				// cigar
+				if (VAL(CIGAR)){
+					setDiffuseColor(0.90, 0.40, 0.02);
+					glPushMatrix();
+					glTranslated(0, 0, -0.2);
+					glRotated(90, 1.0, 0.0, 0.0);
+					drawCylinder(1.5, 0.1, 0.15);
+					glPopMatrix();
+					setDiffuseColor(COLOR_SKIN);
+				}
+				setDiffuseColor(COLOR_SKIN);
+				glPopMatrix();
+			glPopMatrix();
+
+			// Lower Body
+			setDiffuseColor(COLOR_BLUE);
+			glPushMatrix();
+				glRotated(VAL(LOWER_BODY_X), 1.0, 0.0, 0.0);
+				glRotated(VAL(LOWER_BODY_Y), 0.0, 1.0, 0.0);
+				glRotated(VAL(LOWER_BODY_Z), 0.0, 0.0, 1.0);
+				glRotated(90, 1.0, 0.0, 0.0);
+				glScaled(2, 1.4, 1);
+				drawCylinder(3, 1, 1.2);      // "./images/trouser.bmp");
+				glScaled(0.5, 1 / 1.4, 1);
+				// Left upper leg pivot
+				setDiffuseColor(COLOR_SKIN);
+				glPushMatrix();
+				glTranslated(1, 0, 3);
+				drawSphere(1.0);
+				// Left upper leg
+				glRotated(-90, 1.0, 0.0, 0.0);
+				glRotated(VAL(LEFT_UPPER_LEG_X), 1.0, 0.0, 0.0);
+				glRotated(VAL(LEFT_UPPER_LEG_Y), 0.0, 1.0, 0.0);
+				glRotated(VAL(LEFT_UPPER_LEG_Z), 0.0, 0.0, 1.0);
+				glRotated(90, 1.0, 0.0, 0.0);
+				drawCylinder(4, 1, 0.8);
+				// Left lower leg pivot
+				glTranslated(0, 0, 4);
+				drawSphere(0.8);
+				// Left lower leg						
+				glRotated(VAL(LEFT_LOWER_LEG_X), 1.0, 0.0, 0.0);
+				drawCylinder(4, 0.8, 0.6);
+				// Left foot pivot
+				glTranslated(0, 0, 4);
+				drawSphere(0.6);
+				// Left foot
+				setDiffuseColor(COLOR_RED);
+				glRotated(VAL(LEFT_FOOT_X), 1.0, 0.0, 0.0);
+				glTranslated(-0.6, -0.7, 0);
+				drawBox(1.2, 2.6, 0.6);
+				setDiffuseColor(COLOR_SKIN);
+				glPopMatrix();
+
+				// Right upper leg pivot
+				glPushMatrix();
+				glTranslated(-1, 0, 3);
+				drawSphere(1.0);
+				// Right upper leg
+				glRotated(-90, 1.0, 0.0, 0.0);
+				glRotated(VAL(RIGHT_UPPER_LEG_X), 1.0, 0.0, 0.0);
+				glRotated(VAL(RIGHT_UPPER_LEG_Y), 0.0, 1.0, 0.0);
+				glRotated(VAL(RIGHT_UPPER_LEG_Z), 0.0, 0.0, 1.0);
+				glRotated(90, 1.0, 0.0, 0.0);
+				drawCylinder(4, 1, 0.8);
+				// Right lower leg pivot
+				glTranslated(0, 0, 4);
+				drawSphere(0.8);
+				// Right lower leg						
+				glRotated(VAL(RIGHT_LOWER_LEG_X), 1.0, 0.0, 0.0);
+				drawCylinder(4, 0.8, 0.6);
+				// Right foot pivot
+				glTranslated(0, 0, 4);
+				drawSphere(0.6);
+				//Right foot
+				setDiffuseColor(COLOR_RED);
+				glRotated(VAL(RIGHT_FOOT_X), 1.0, 0.0, 0.0);
+				glTranslated(-0.6, -0.7, 0);
+				drawBox(1.2, 2.6, 0.6);
+				glPopMatrix();
+
+			glPopMatrix();
 		glPopMatrix();
-		setDiffuseColor(COLOR_SKIN);
-	}
-	// Left thumb
-	glPushMatrix();
-	glTranslated(0, 1, 0);
-	glTranslated(0.2, 0, 0);
-	glRotated(VAL(LEFT_THUMB), 1.0, 0.0, 0.0);
-	glTranslated(-0.2, 0, 0);
-	drawBox(0.4, 0.4, 0.6);
-	glPopMatrix();
-	glPopMatrix();
-
-	// Right upper arm pivot
-	glPushMatrix();
-	glTranslated(-2.2, 0, 3.2);
-	drawSphere(0.8);
-	// Right upper arm
-	glRotated(90, 1.0, 0.0, 0.0);
-	glRotated(VAL(RIGHT_UPPER_ARM_X) - VAL(RIGHT_LINK_MOTION) * 70 / 90 , 1.0, 0.0, 0.0);
-	glRotated(VAL(RIGHT_UPPER_ARM_Y) + VAL(RIGHT_LINK_MOTION) * 35 / 90, 0.0, 1.0, 0.0);
-	glRotated(VAL(RIGHT_UPPER_ARM_Z) - VAL(RIGHT_LINK_MOTION) * 25 / 90, 0.0, 0.0, 1.0);
-	glRotated(90, 1.0, 0.0, 0.0);
-	/*
-	if (VAL(META_ARM)){
-		glScaled(0.2, 0.2, 0.5);
-		glRotated(-90, 0.0, 1.0, 0.0);
-		drawMetaarm(VAL(META_ARM_SIZE));
-		glRotated(90, 0.0, 1.0, 0.0);
-		glScaled(5, 5, 2);
-	}*/
-	//else{
-		drawCylinder(4.5, 0.8, 0.6);
-	//}
-	// Right lower arm pivot
-	glTranslated(0, 0, 4.5);
-	drawSphere(0.6);
-	// Right lower arm
-	glRotated(-90, 1.0, 0.0, 0.0);
-	glRotated(VAL(RIGHT_LOWER_ARM_X) - VAL(RIGHT_LINK_MOTION) * 130 / 90, 1.0, 0.0, 0.0);
-	glRotated(90, 1.0, 0.0, 0.0);
-	drawCylinder(3.5, 0.6, 0.4);
-	// Right hand pivot
-	glTranslated(0, 0, 3.5);
-	drawSphere(0.4);
-	// Right hand
-	glRotated(VAL(RIGHT_HAND_X), 1.0, 0.0, 0.0);
-	glRotated(VAL(RIGHT_HAND_Z), 0.0, 1.0, 0.0);
-	glTranslated(-0.2, -0.5, 0);
-	drawBox(0.4, 1, 1.2);
-	// Right thumb
-	glTranslated(0, 1, 0);
-	glTranslated(0.2, 0, 0);
-	glRotated(VAL(RIGHT_THUMB), 1.0, 0.0, 0.0);
-	glTranslated(-0.2, 0, 0);
-	drawBox(0.4, 0.4, 0.6);
-	glPopMatrix();
-
-	// Neck pivot
-	glPushMatrix();
-	glTranslated(0, 0, 4);
-	drawSphere(0.7);
-	// Neck
-	glRotated(90, 1, 0, 0);
-	glRotated(VAL(HEAD_X), 1, 0, 0);
-	glRotated(VAL(HEAD_Y), 0, 1, 0);
-	glRotated(VAL(HEAD_Z), 0, 0, 1);
-	glRotated(-90, 1, 0, 0);
-	drawCylinder(1, 0.7, 0.7);
-	// head
-	glTranslated(0, 0, 1.5);
-	glScaled(1, 1, 1.5);
-	drawHead(VAL(NOSE_SIZE), VAL(EYE_COLOR), VAL(EYE_SIZE), VAL(EYE_BALL_SIZE), VAL(EYE_DIST));
-	glScaled(1, 1, 1.0 / 1.5);
-	// hat
-	if (VAL(HAT)){
-		setDiffuseColor(0.76, 0.65, 0.19);
-		glPushMatrix();
-		glTranslated(0, 0, 1.8);
-		glRotated(90, 1.0, 0.0, 0.0);
-		drawHat(1, 2);
-		glPopMatrix();
-		setDiffuseColor(COLOR_SKIN);
-	}
-	// cigar
-	if (VAL(CIGAR)){
-		setDiffuseColor(0.90, 0.40, 0.02);
-		glPushMatrix();
-		glTranslated(0, 0, -0.2);
-		glRotated(90, 1.0, 0.0, 0.0);
-		drawCylinder(1.5, 0.1, 0.15);
-		glPopMatrix();
-		setDiffuseColor(COLOR_SKIN);
-	}
-	setDiffuseColor(COLOR_SKIN);
-	glPopMatrix();
-	glPopMatrix();
-
-	// Lower Body
-	setDiffuseColor(COLOR_BLUE);
-	glPushMatrix();
-	glRotated(VAL(LOWER_BODY_X), 1.0, 0.0, 0.0);
-	glRotated(VAL(LOWER_BODY_Y), 0.0, 1.0, 0.0);
-	glRotated(VAL(LOWER_BODY_Z), 0.0, 0.0, 1.0);
-	glRotated(90, 1.0, 0.0, 0.0);
-	glScaled(2, 1.4, 1);
-	drawCylinder(3, 1, 1.2);      // "./images/trouser.bmp");
-	glScaled(0.5, 1 / 1.4, 1);
-	// Left upper leg pivot
-	setDiffuseColor(COLOR_SKIN);
-	glPushMatrix();
-	glTranslated(1, 0, 3);
-	drawSphere(1.0);
-	// Left upper leg
-	glRotated(-90, 1.0, 0.0, 0.0);
-	glRotated(VAL(LEFT_UPPER_LEG_X), 1.0, 0.0, 0.0);
-	glRotated(VAL(LEFT_UPPER_LEG_Y), 0.0, 1.0, 0.0);
-	glRotated(VAL(LEFT_UPPER_LEG_Z), 0.0, 0.0, 1.0);
-	glRotated(90, 1.0, 0.0, 0.0);
-	drawCylinder(4, 1, 0.8);
-	// Left lower leg pivot
-	glTranslated(0, 0, 4);
-	drawSphere(0.8);
-	// Left lower leg						
-	glRotated(VAL(LEFT_LOWER_LEG_X), 1.0, 0.0, 0.0);
-	drawCylinder(4, 0.8, 0.6);
-	// Left foot pivot
-	glTranslated(0, 0, 4);
-	drawSphere(0.6);
-	// Left foot
-	setDiffuseColor(COLOR_RED);
-	glRotated(VAL(LEFT_FOOT_X), 1.0, 0.0, 0.0);
-	glTranslated(-0.6, -0.7, 0);
-	drawBox(1.2, 2.6, 0.6);
-	setDiffuseColor(COLOR_SKIN);
-	glPopMatrix();
-
-	// Right upper leg pivot
-	glPushMatrix();
-	glTranslated(-1, 0, 3);
-	drawSphere(1.0);
-	// Right upper leg
-	glRotated(-90, 1.0, 0.0, 0.0);
-	glRotated(VAL(RIGHT_UPPER_LEG_X), 1.0, 0.0, 0.0);
-	glRotated(VAL(RIGHT_UPPER_LEG_Y), 0.0, 1.0, 0.0);
-	glRotated(VAL(RIGHT_UPPER_LEG_Z), 0.0, 0.0, 1.0);
-	glRotated(90, 1.0, 0.0, 0.0);
-	drawCylinder(4, 1, 0.8);
-	// Right lower leg pivot
-	glTranslated(0, 0, 4);
-	drawSphere(0.8);
-	// Right lower leg						
-	glRotated(VAL(RIGHT_LOWER_LEG_X), 1.0, 0.0, 0.0);
-	drawCylinder(4, 0.8, 0.6);
-	// Right foot pivot
-	glTranslated(0, 0, 4);
-	drawSphere(0.6);
-	//Right foot
-	setDiffuseColor(COLOR_RED);
-	glRotated(VAL(RIGHT_FOOT_X), 1.0, 0.0, 0.0);
-	glTranslated(-0.6, -0.7, 0);
-	drawBox(1.2, 2.6, 0.6);
-	glPopMatrix();
-
-	glPopMatrix();
-	glPopMatrix();
 	glPopMatrix();
 
 	
@@ -806,14 +815,14 @@ int main()
     controls[LOWER_LENGTH] = ModelerControl("lower arm length (h2)", 1, 10.0, 0.1, 3.0 );
     controls[UPPER_LENGTH] = ModelerControl("upper arm length (h3)", 1, 10.0, 0.1, 2.5 );
 	*/
-    controls[PARTICLE_COUNT] = ModelerControl("particle count (pc)", 0.0, 5.0, 0.1, 5.0 );
+    controls[PARTICLE_COUNT] = ModelerControl("particle count (pc)", 0, 10, 1, 5 );
     
 
 
 	// You should create a ParticleSystem object ps here and then
 	// call ModelerApplication::Instance()->SetParticleSystem(ps)
 	// to hook it up to the animator interface.
-	ParticleSystem *ps = new ParticleSystem();
+	ParticleSystem *ps = new ParticleSystem(1,0.01);
 	// do some more particle system setup
 
 	ModelerApplication::Instance()->SetParticleSystem(ps);

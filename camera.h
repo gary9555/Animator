@@ -61,7 +61,8 @@ public:
     }
     inline float getElevation() const
     { return mElevation; }
-    
+	inline Vec3f getPosition() const
+	{ return mPosition;  }
     inline void setAzimuth( float azimuth )
     { mAzimuth = azimuth; mDirtyTransform = true; }
     inline float getAzimuth() const

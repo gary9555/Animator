@@ -17,8 +17,48 @@
 #define __PARTICLE_SYSTEM_H__
 
 #include "vec.h"
+#include <vector>
+#include <map>
+
+class Force {
+public:
+	virtual void addForce(Vec3f& speed, float deltaT, float mass) = 0;
+};
+
+class Gravity : public Force {
+public:
+	Gravity(Vec3f v) : g(v) {}
+	Vec3f g;   //gravity
+	virtual void addForce(Vec3f& speed, float deltaT, float mass);
+};
+
+class Friction : public Force {
+public:
+	Friction(float m) : F(m) {}
+	float F;  // magnitude of the force
+	virtual void addForce(Vec3f& speed, float deltaT, float mass);
+};
 
 
+class Particle {
+public:
+	Particle(Vec3f p, double m) : position(p), mass(m) {}
+
+	inline void setPos(Vec3f p) { position = p; }
+	inline void setSpeed(Vec3f s) {	speed = s; }
+	inline Vec3f getPos() const { return position; }
+	inline Vec3f getSpeed() const { return speed; }
+
+	void add_force(Force* f);
+	void nextPos(float deltaT);
+	void draw();
+
+private:
+	double mass;
+	Vec3f position;
+	Vec3f speed;
+	vector<Force*> forces;
+};
 
 class ParticleSystem {
 
@@ -27,7 +67,7 @@ public:
 
 
 	/** Constructor **/
-	ParticleSystem();
+	ParticleSystem(float gravity, float friction);
 
 
 	/** Destructor **/
@@ -63,6 +103,8 @@ public:
 	virtual void clearBaked();	
 
 
+	
+
 
 	// These accessor fxns are implemented for you
 	float getBakeStartTime() { return bake_start_time; }
@@ -72,7 +114,8 @@ public:
 	bool isDirty() { return dirty; }
 	void setDirty(bool d) { dirty = d; }
 
-
+	virtual void SpawnParticles(Vec3f pos, int num);
+	virtual bool isBaked(float time);
 
 protected:
 	
@@ -88,7 +131,11 @@ protected:
 	/** General state variables **/
 	bool simulate;						// flag for simulation mode
 	bool dirty;							// flag for updating ui (don't worry about this)
-
+	
+	float currentT;
+	vector<Particle> particles;
+	vector<Force*> forces;
+	map<float, vector<Particle>> bakeInfo;
 };
 
 
